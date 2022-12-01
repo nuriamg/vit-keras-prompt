@@ -108,7 +108,7 @@ def build_model(
         name="embedding",
     )(image_input)
     y = tf.keras.layers.Reshape((y.shape[1] * y.shape[2], hidden_size))(y)
-    
+
     prompt_input = tf.keras.layers.Input(shape=(y.shape[1] * y.shape[2], hidden_size), name="task")
 
     y = tf.concat([y, prompt_input], 1)
@@ -132,7 +132,7 @@ def build_model(
         )(y)
     if include_top:
         y = tf.keras.layers.Dense(classes, name="head", activation=activation)(y)
-    return tf.keras.models.Model(inputs=x, outputs=y, name=name)
+    return tf.keras.models.Model(inputs=[image_input, prompt_input], outputs=y, name=name)
 
 
 def validate_pretrained_top(
